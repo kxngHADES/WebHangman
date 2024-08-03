@@ -1,100 +1,90 @@
-Here’s an updated version of the `README.md` to reflect that the project is not yet complete and will be hostable on users' own servers when finished:
-
-```markdown
 # 2-Player Hangman
 
-**Note:** This project is a work in progress and is not yet complete. Once finalized, users will be able to host it on their own servers.
+Welcome to the 2-Player Hangman game! This is a simple multiplayer Hangman game where two players can join a room and take turns guessing letters to uncover a hidden word.
 
-A simple 2-player Hangman game using Node.js and Socket.IO. Players can create and join rooms to play Hangman with each other in real-time.
+## Table of Contents
 
-## Project Setup
+- [Project Overview](#project-overview)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
 
-### Prerequisites
+## Project Overview
 
-- Node.js and npm installed on your machine.
-- A modern web browser (e.g., Chrome, Firefox).
+This Hangman game allows two players to:
+- Create or join a room.
+- Set a word for the other player to guess.
+- Guess letters to reveal the hidden word.
+- Determine the winner based on correct guesses.
 
-### Installation
+The project uses Node.js with Express and Socket.IO for real-time communication between clients.
 
-1. **Clone the Repository**
+## Installation
 
-   If you haven't already cloned the repository, do so with:
+To get started, follow these steps:
 
-   ```bash
-   git clone <repository-url>
-   ```
+1. **Clone the repository:**
 
-   Navigate into the project directory:
+    ```bash
+    git clone https://github.com/yourusername/2-player-hangman.git
+    cd 2-player-hangman
+    ```
 
-   ```bash
-   cd <project-directory>
-   ```
+2. **Install dependencies:**
 
-2. **Install Dependencies**
+    Make sure you have [Node.js](https://nodejs.org/) installed. Then run:
 
-   Install the required Node.js packages:
+    ```bash
+    npm install
+    ```
 
-   ```bash
-   npm install
-   ```
+3. **Start the server:**
 
-### File Structure
+    ```bash
+    npm start
+    ```
 
-- `public/index.html`: The HTML front-end for the game.
-- `server.js`: The Node.js server that handles game logic and Socket.IO communication.
+    The server will run on [http://localhost:3000](http://localhost:3000).
 
-### Running the Server
+4. **Open the game:**
 
-1. **Start the Node.js Server**
+    Navigate to [http://localhost:3000](http://localhost:3000) in your browser to start playing.
 
-   Run the server with:
+## Usage
 
-   ```bash
-   node server.js
-   ```
+1. **Creating a Room:**
+   - Click the "Create Room" button.
+   - Share the generated Room ID with the other player.
 
-   The server will start on `http://localhost:3000`.
+2. **Joining a Room:**
+   - Enter the Room ID provided by the other player.
+   - Click the "Join Room" button.
 
-2. **Open the Game in a Browser**
+3. **Setting a Word:**
+   - The first player to join the room will be prompted to set a word.
+   - Enter the word and click "Set Word".
 
-   Navigate to `http://localhost:3000` in your web browser. You should see the game interface.
+4. **Guessing Letters:**
+   - Both players can enter a letter to guess and click "Guess".
 
-### Using the Game
+5. **Winning and Losing:**
+   - The game will automatically determine the winner based on correct guesses.
 
-1. **Create a Room**
+## Contributing
 
-   Click the "Create Room" button to create a new game room. You will receive a room ID that you can share with the second player.
+Contributions are welcome! If you have any suggestions or improvements, feel free to open an issue or submit a pull request.
 
-2. **Join a Room**
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-branch`).
+3. Commit your changes (`git commit -am 'Add new feature'`).
+4. Push to the branch (`git push origin feature-branch`).
+5. Create a new Pull Request.
 
-   Enter the room ID in the "Enter Room ID" field and click "Join Room" to join an existing game.
+## License
 
-3. **Set a Word**
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-   The player who created the room will be prompted to enter a word for the other player to guess. This player is the "word setter."
+---
 
-4. **Make Guesses**
-
-   Both players can make guesses by entering a letter and clicking the "Guess" button.
-
-5. **Game Over**
-
-   The game will notify players when the game is over and display the result.
-
-### Troubleshooting
-
-- **Server Not Starting:** Ensure all dependencies are installed and there are no syntax errors in your `server.js` file.
-- **Socket.IO Issues:** Check the console in your browser’s developer tools for connection errors and ensure your server is running.
-- **Page Not Loading:** Make sure you are accessing the correct URL (`http://localhost:3000`).
-
-### Contributing
-
-Feel free to submit issues or pull requests if you find any bugs or have suggestions for improvements.
-
-### License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-```
-
-This updated `README.md` clarifies that the project is still under development and will eventually be available for hosting on users' own servers.
+Happy coding and enjoy your Hangman game!
