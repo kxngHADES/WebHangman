@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2-Player Hangman</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        #game-container {
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        #word-display {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        input, button {
+            font-size: 18px;
+            padding: 5px 10px;
+            margin: 5px;
+        }
+        #message {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <h1>2-Player Hangman</h1>
+        <div id="room-controls">
+            <button id="create-room-btn">Create Room</button>
+            <input type="text" id="room-id-input" placeholder="Enter Room ID">
+            <button id="join-room-btn">Join Room</button>
+        </div>
+        <div id="game-controls" style="display: none;">
+            <div id="word-input-container">
+                <input type="text" id="word-input" placeholder="Enter word">
+                <button id="set-word-btn">Set Word</button>
+            </div>
+            <div id="word-display"></div>
+            <input type="text" id="guess-input" maxlength="1" placeholder="Guess a letter">
+            <button id="guess-btn">Guess</button>
+        </div>
+        <div id="message"></div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        const roomControls = document.getElementById('room-controls');
+        const gameControls = document.getElementById('game-controls');
+        const createRoomBtn = document.getElementById('create-room-btn');
+        const joinRoomBtn = document.getElementById('join-room-btn');
+        const roomIdInput = document.getElementById('room-id-input');
+        const wordInputContainer = document.getElementById('word-input-container');
+        const wordInput = document.getElementById('word-input');
+        const setWordBtn = document.getElementById('set-word-btn');
+        const wordDisplay = document.getElementById('word-display');
+        const guessInput = document.getElementById('guess-input');
+        const guessBtn = document.getElementById('guess-btn');
+        const message = document.getElementById('message');
+
+        let roomId = null;
+        let isWordSetter = false;
+
+        createRoomBtn.addEventListener('click', () => {
+        console.log('Create Room button clicked');
+        socket.emit('createRoom');
+    });
+
+        joinRoomBtn.addEventListener('click', () => {
+            const roomToJoin = roomIdInput.value.trim();
+            if (roomToJoin) {
+                socket.emit('joinRoom', roomToJoin);
+            }
+        });
+
+        setWordBtn.addEventListener('click', () => {
+            const word = wordInput.value.trim();
+            if (word) {
+                socket.emit('setWord', { roomId, word });
+                wordInputContainer.style.display = 'none';
+            }
+        });
+
+        guessBtn.addEventListener('click', () => {
+            const guess = guessInput.value.trim().toLowerCase();
+            if (guess && guess.length === 1) {
+                socket.emit('makeGuess', { roomId, guess });
+                guessInput.value = '';
+            }
+        });
+
+        socket.on('connect', () => {
+        console.log('Connected to server');
+    });
+
+    socket.on('connect_error', (error) => {
+        console.error('Connection error:', error);
+        message.textContent = 'Error connecting to server. Please check your connection and refresh the page.';
+    });
+
+    socket.on('roomCreated', (createdRoomId) => {
+        console.log('Room created:', createdRoomId);
+        roomId = createdRoomId;
+        message.textContent = `Room created. Share this ID: ${roomId}`;
+        roomControls.style.display = 'none';
+        gameControls.style.display = 'block';
+        isWordSetter = true;
+    });
+
+        socket.on('gameReady', (players) => {
+            roomControls.style.display = 'none';
+            gameControls.style.display = 'block';
+            isWordSetter = socket.id === players[0];
+            message.textContent = isWordSetter ? 'Enter a word for the other player to guess' : 'Waiting for the other player to set a word';
+            wordInputContainer.style.display = isWordSetter ? 'block' : 'none';
+        });
+
+        socket.on('wordSet', (guessedWord) => {
+            wordDisplay.textContent = guessedWord.join(' ');
+            message.textContent = isWordSetter ? 'Wait for the other player to guess' : 'Start guessing!';
+        });
+
+        socket.on('guessResult', ({ guessedWord, correct }) => {
+            wordDisplay.textContent = guessedWord.join(' ');
+            message.textContent = correct ? 'Correct guess!' : 'Wrong guess!';
+        });
+
+        socket.on('gameOver', ({ winner, word }) => {
+            wordDisplay.textContent = word;
+            message.textContent = socket.id === winner ? 'You won!' : 'You lost!';
+            guessBtn.disabled = true;
+            guessInput.disabled = true;
+        });
+
+        socket.on('playerDisconnected', () => {
+            message.textContent = 'The other player disconnected. Please refresh to start a new game.';
+            guessBtn.disabled = true;
+            guessInput.disabled = true;
+        });
+
+        socket.on('roomError', (error) => {
+            message.textContent = error;
+        });
+    </script>
+</body>
+</html>
