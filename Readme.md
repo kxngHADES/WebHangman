@@ -27,8 +27,8 @@ To get started, follow these steps:
 1. **Clone the repository:**
 
     ```bash
-    git clone https://github.com/yourusername/2-player-hangman.git
-    cd 2-player-hangman
+    https://github.com/kxngHADES/WebHangman.git
+    cd WebHangman
     ```
 
 2. **Install dependencies:**
