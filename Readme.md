@@ -1,4 +1,4 @@
-# 2-Player Hangman
+# 2-Player Web Hangman
 
 Welcome to the 2-Player Hangman game! This is a simple multiplayer Hangman game where two players can join a room and take turns guessing letters to uncover a hidden word.
 
