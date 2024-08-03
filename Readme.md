@@ -1,4 +1,4 @@
-#Note not yet completed
+# Note not yet completed
 
 
 # 2-Player Web Hangman
